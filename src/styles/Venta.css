@@ -1,0 +1,13 @@
+.venta-cerrada-tarjeta { text-align: center; padding: 40px; }
+.venta-cerrada-icono { font-size: 40px; }
+.venta-cerrada-titulo { margin-top: 10px; }
+.venta-cerrada-texto { color: #5B8A85; margin-top: 8px; margin-bottom: 20px; }
+.venta-layout { display: grid; grid-template-columns: 1fr 380px; gap: 20px; }
+.venta-mensaje { color: #DC2626; margin-top: 8px; }
+.venta-input-desc { width: 60px; }
+.venta-tabla-vacia { text-align: center; padding: 20px; }
+.venta-resumen-fila { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; }
+.venta-resumen-descuento { color: #DC2626; }
+.venta-resumen-iva { margin-bottom: 10px; }
+.venta-total { margin-bottom: 10px; }
+.venta-btn-cobrar { width: 100%; padding: 14px; font-size: 18px; }

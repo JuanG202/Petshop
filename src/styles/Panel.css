@@ -1,0 +1,14 @@
+.panel-bienvenida { display: flex; align-items: center; gap: 14px; background: linear-gradient(120deg, #0B2B2A, #123B39); border: none; }
+.panel-bienvenida-icono { font-size: 34px; animation: bounce 1.8s ease-in-out infinite; }
+.panel-bienvenida-titulo { color: #DFF7F1; }
+.panel-bienvenida-sub { color: #9FD8CF; font-size: 12px; margin-top: 2px; }
+.panel-alerta-caja { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-left: 4px solid #DC2626; }
+.panel-alerta-titulo { font-size: 15px; }
+.panel-alerta-texto { font-size: 12px; color: #5B8A85; margin-top: 4px; }
+.panel-grid { margin-bottom: 20px; }
+.panel-card-title { font-size: 15px; }
+.panel-card-value { font-size: 28px; }
+.panel-bajo-stock-alerta { color: #DC2626; }
+.panel-bajo-stock-ok { color: #10241D; }
+.panel-accesos-title { margin-bottom: 12px; }
+.panel-accesos { display: flex; gap: 10px; flex-wrap: wrap; }

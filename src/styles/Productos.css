@@ -1,0 +1,16 @@
+.prod-tabs { display: flex; gap: 10px; margin-bottom: 16px; }
+.prod-form-title { margin-bottom: 12px; }
+.prod-codigos-block { margin-top: 14px; }
+.prod-codigo-input-row { display: flex; gap: 6px; }
+.prod-codigos-lista { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.prod-codigo-chip { background: #EAF7F5; border: 1px solid #BFE7E1; border-radius: 20px; padding: 4px 10px; font-size: 12px; display: flex; align-items: center; gap: 6px; }
+.prod-codigo-quitar { cursor: pointer; color: #DC2626; font-weight: 700; }
+.prod-sin-codigos { font-size: 12px; color: #5B8A85; }
+.prod-form-acciones { margin-top: 14px; display: flex; gap: 10px; }
+.prod-buscador { margin-bottom: 12px; }
+.prod-tabla-codigos { font-size: 11px; }
+.prod-stock-bajo { color: #DC2626; font-weight: 600; }
+.prod-stock-ok { color: #10241D; font-weight: 600; }
+.prod-btn-editar { margin-right: 6px; }
+.prod-tabla-vacia { text-align: center; padding: 20px; }
+.prod-precio-final { font-weight: 700; }

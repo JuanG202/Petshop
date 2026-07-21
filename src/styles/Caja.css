@@ -1,0 +1,21 @@
+.caja-estado-tarjeta { display: flex; align-items: center; gap: 14px; }
+.caja-estado-icono { font-size: 30px; }
+.caja-estado-label { font-size: 11px; font-weight: 700; color: #5B8A85; text-transform: uppercase; }
+.caja-estado-fecha { font-size: 12px; color: #5B8A85; margin-top: 4px; }
+.caja-grid { margin-bottom: 20px; }
+.caja-card-title { font-size: 15px; }
+.caja-card-value { font-size: 22px; margin-top: 6px; }
+.caja-card-value-verde { color: #0D9488; }
+.caja-btn-cerrar { width: 100%; padding: 14px; font-size: 15px; }
+.caja-cierre-title { margin-bottom: 14px; }
+.caja-form-group { margin-bottom: 12px; }
+.caja-diferencia { margin-bottom: 12px; font-weight: 700; }
+.caja-diferencia-positiva { color: #0D9488; }
+.caja-diferencia-negativa { color: #DC2626; }
+.caja-acciones { display: flex; gap: 10px; }
+.caja-btn-cancelar { flex: 1; }
+.caja-btn-confirmar { flex: 2; }
+.caja-btn-abrir { width: 100%; padding: 14px; font-size: 15px; }
+.caja-historial-title { margin-bottom: 12px; }
+.caja-dif-positiva { color: #0D9488; font-weight: 700; }
+.caja-dif-negativa { color: #DC2626; font-weight: 700; }

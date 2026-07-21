@@ -1,0 +1,3 @@
+.topbar-icono { display: inline-block; animation: bounce 1.8s ease-in-out infinite; }
+.topbar-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+.topbar-badge { margin-right: 8px; }
