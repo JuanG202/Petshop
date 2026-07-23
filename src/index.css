@@ -194,7 +194,7 @@ tbody tr:hover { background: #F0FBFA; transform: scale(1.005); }
 
 @media print {
   body * { visibility: hidden; }
-  #factura, #factura * { visibility: visible; }
+  #factura, #factura *, #reporte-imprimible, #reporte-imprimible * { visibility: visible; }
   #factura {
     position: absolute;
     top: 0;
@@ -204,6 +204,15 @@ tbody tr:hover { background: #F0FBFA; transform: scale(1.005); }
     border: none;
     padding: 0 6px;
     animation: none;
+  }
+  #reporte-imprimible {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    padding: 10mm;
+    margin: 0;
   }
   .no-print { display: none !important; }
   #factura, .fac-fila, .fac-tienda, .fac-sub, .fac-fecha, .fac-detalle, .fac-gracias, .fac-patas {
