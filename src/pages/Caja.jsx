@@ -1,7 +1,7 @@
 import '../styles/Caja.css'
 import { useState } from 'react'
 import Topbar from './Topbar'
-import { getCajaAbierta, abrirCaja, cerrarCaja, getHistorialCaja, getVentasJornada } from '../db'
+import { getCajaAbierta, abrirCaja, cerrarCaja, getHistorialCaja, getVentasJornada, getGastosJornada, addGasto } from '../db'
 
 function formatMoney(v) {
   return '$ ' + Number(v || 0).toLocaleString('es-CO')
@@ -19,15 +19,28 @@ export default function Caja() {
   const [montoCierre, setMontoCierre] = useState('')
   const [notaCierre, setNotaCierre] = useState('')
   const [historial, setHistorial] = useState(getHistorialCaja())
+  const [gastos, setGastos] = useState(getGastosJornada())
+  const [conceptoGasto, setConceptoGasto] = useState('')
+  const [valorGasto, setValorGasto] = useState('')
 
   const ventasJornada = caja ? getVentasJornada() : []
   const totalVentas = ventasJornada.reduce((s, v) => s + v.total, 0)
+  const totalGastos = gastos.reduce((s, g) => s + g.valor, 0)
+
+  function handleAgregarGasto() {
+    if (!conceptoGasto || !valorGasto) return
+    addGasto({ concepto: conceptoGasto, valor: valorGasto.replace(/\./g, '') })
+    setGastos(getGastosJornada())
+    setConceptoGasto('')
+    setValorGasto('')
+  }
 
   function handleAbrir() {
     const nueva = abrirCaja(montoInicial.replace(/\./g, ''), nota)
     setCaja(nueva)
     setMontoInicial('')
     setNota('')
+    setGastos(getGastosJornada())
   }
 
   function handleCerrar() {
@@ -37,11 +50,12 @@ export default function Caja() {
     setConfirmando(false)
     setMontoCierre('')
     setNotaCierre('')
+    setGastos([])
     void registro
   }
 
   const diferenciaPreview = montoCierre
-    ? Number(montoCierre.replace(/\./g, '')) - ((caja?.montoInicial || 0) + totalVentas)
+    ? Number(montoCierre.replace(/\./g, '')) - ((caja?.montoInicial || 0) + totalVentas - totalGastos)
     : null
 
   return (
@@ -78,9 +92,43 @@ export default function Caja() {
                 <p className="caja-card-value">{ventasJornada.length}</p>
               </div>
               <div className="tarjeta">
-                <h3 className="caja-card-title">Total esperado</h3>
-                <p className="caja-card-value">{formatMoney(caja.montoInicial + totalVentas)}</p>
+                <h3 className="caja-card-title">Gastos en jornada</h3>
+                <p className="caja-card-value caja-card-value-roja">- {formatMoney(totalGastos)}</p>
               </div>
+              <div className="tarjeta">
+                <h3 className="caja-card-title">Total esperado</h3>
+                <p className="caja-card-value">{formatMoney(caja.montoInicial + totalVentas - totalGastos)}</p>
+              </div>
+            </div>
+
+            <div className="tarjeta">
+              <h3 className="caja-cierre-title">Gastos de caja</h3>
+              <div className="caja-form-group">
+                <label>Concepto</label>
+                <input value={conceptoGasto} onChange={(e) => setConceptoGasto(e.target.value)} placeholder="Ej: Almuerzo" />
+              </div>
+              <div className="caja-form-group">
+                <label>Valor</label>
+                <input value={valorGasto} onChange={(e) => setValorGasto(formatMiles(e.target.value))} placeholder="Ej: 10.000" />
+              </div>
+              <button onClick={handleAgregarGasto}>➕ Registrar gasto</button>
+
+              {gastos.length > 0 && (
+                <table>
+                  <thead>
+                    <tr><th>Hora</th><th>Concepto</th><th>Valor</th></tr>
+                  </thead>
+                  <tbody>
+                    {gastos.map((g) => (
+                      <tr key={g.id}>
+                        <td>{g.hora}</td>
+                        <td>{g.concepto}</td>
+                        <td>{formatMoney(g.valor)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
 
             {!confirmando ? (
@@ -132,7 +180,7 @@ export default function Caja() {
             <h3 className="caja-historial-title">Historial de jornadas</h3>
             <table>
               <thead>
-                <tr><th>Apertura</th><th>Cierre</th><th>Inicial</th><th>Ventas</th><th>Diferencia</th></tr>
+                <tr><th>Apertura</th><th>Cierre</th><th>Inicial</th><th>Ventas</th><th>Gastos</th><th>Diferencia</th></tr>
               </thead>
               <tbody>
                 {historial.slice(0, 10).map((c, i) => (
@@ -141,6 +189,7 @@ export default function Caja() {
                     <td>{c.fechaCierre} {c.horaCierre}</td>
                     <td>{formatMoney(c.montoInicial)}</td>
                     <td>{formatMoney(c.ventas)}</td>
+                    <td>{formatMoney(c.gastos)}</td>
                     <td className={c.diferencia >= 0 ? 'caja-dif-positiva' : 'caja-dif-negativa'}>
                       {formatMoney(c.diferencia)}
                     </td>

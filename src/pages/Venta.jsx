@@ -85,6 +85,16 @@ export default function Venta() {
   }
 
   function cambiarCantidad(id, delta) {
+    if (delta > 0) {
+      const productos = JSON.parse(localStorage.getItem('ps_productos') || '[]')
+      const prod = productos.find((p) => p.id === id)
+      const item = carrito.find((i) => i.id === id)
+      if (prod && item && item.cantidad >= Number(prod.stock)) {
+        setMensaje('No hay más stock de este producto')
+        setTimeout(() => setMensaje(''), 2000)
+        return
+      }
+    }
     setCarrito((prev) =>
       prev.map((i) => (i.id === id ? { ...i, cantidad: i.cantidad + delta } : i)).filter((i) => i.cantidad > 0)
     )

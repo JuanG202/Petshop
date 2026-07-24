@@ -7,6 +7,7 @@ const KEYS = {
   caja: 'ps_caja_abierta',
   historialCaja: 'ps_historial_caja',
   consecutivo: 'ps_consecutivo',
+  gastos: 'ps_gastos',
 };
 
 function read(key, def) {
@@ -86,11 +87,35 @@ export function abrirCaja(montoInicial, nota) {
   write(KEYS.caja, caja);
   return caja;
 }
+/* ── Gastos de caja ── */
+export function getGastos() {
+  return read(KEYS.gastos, []);
+}
+export function addGasto(gasto) {
+  const list = getGastos();
+  list.push({
+    id: Date.now(),
+    timestamp: Date.now(),
+    fecha: new Date().toLocaleDateString('es-CO'),
+    hora: new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }),
+    concepto: gasto.concepto,
+    valor: Number(gasto.valor) || 0,
+  });
+  write(KEYS.gastos, list);
+}
+export function getGastosJornada() {
+  const caja = getCajaAbierta();
+  if (!caja) return [];
+  return getGastos().filter((g) => (g.timestamp || 0) >= caja.timestamp);
+}
+
 export function cerrarCaja(montoCierre, notaCierre) {
   const caja = getCajaAbierta();
   if (!caja) return null;
   const ventasJornada = getVentas().filter((v) => (v.timestamp || 0) >= caja.timestamp);
   const totalVentas = ventasJornada.reduce((s, v) => s + v.total, 0);
+  const gastosJornada = getGastos().filter((g) => (g.timestamp || 0) >= caja.timestamp);
+  const totalGastos = gastosJornada.reduce((s, g) => s + g.valor, 0);
   const registro = {
     ...caja,
     cierreTimestamp: Date.now(),
@@ -98,8 +123,9 @@ export function cerrarCaja(montoCierre, notaCierre) {
     horaCierre: new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }),
     ventas: totalVentas,
     cantidadVentas: ventasJornada.length,
+    gastos: totalGastos,
     montoCierre: Number(montoCierre) || 0,
-    diferencia: (Number(montoCierre) || 0) - (caja.montoInicial + totalVentas),
+    diferencia: (Number(montoCierre) || 0) - (caja.montoInicial + totalVentas - totalGastos),
     notaCierre: notaCierre || '',
   };
   const historial = read(KEYS.historialCaja, []);
