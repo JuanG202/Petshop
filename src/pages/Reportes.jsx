@@ -181,7 +181,6 @@ export default function Reportes() {
   const totalIngresos = ventasPeriodo.reduce((s, v) => s + v.total, 0)
   const cantidadVentas = ventasPeriodo.length
   const ticketPromedio = cantidadVentas ? totalIngresos / cantidadVentas : 0
-  const totalIVA = ventasPeriodo.reduce((s, v) => s + (v.iva || 0), 0)
   const totalDescuentos = ventasPeriodo.reduce((s, v) => s + (v.descuento || 0), 0)
 
   const { utilidadEstimada, huboProductosSinCosto } = useMemo(() => {
@@ -191,7 +190,7 @@ export default function Reportes() {
       v.items.forEach((i) => {
         const prod = productosPorId[i.id]
         if (prod && prod.costo !== undefined && prod.costo !== '') {
-          utilidad += (i.precio - Number(prod.costo)) * i.cantidad * (1 - (i.descuento || 0) / 100)
+          utilidad += (i.precio - Number(prod.costo)) * i.cantidad
         } else {
           faltantes = true
         }
@@ -212,7 +211,7 @@ export default function Reportes() {
       v.items.forEach((i) => {
         if (!map[i.nombre]) map[i.nombre] = { cantidad: 0, ingresos: 0 }
         map[i.nombre].cantidad += i.cantidad
-        map[i.nombre].ingresos += i.precio * i.cantidad * (1 - (i.descuento || 0) / 100)
+        map[i.nombre].ingresos += i.precio * i.cantidad
       })
     )
     return Object.entries(map)
@@ -225,7 +224,7 @@ export default function Reportes() {
     ventasPeriodo.forEach((v) =>
       v.items.forEach((i) => {
         const cat = productosPorId[i.id]?.categoria || 'Sin categoría'
-        map[cat] = (map[cat] || 0) + i.precio * i.cantidad * (1 - (i.descuento || 0) / 100)
+        map[cat] = (map[cat] || 0) + i.precio * i.cantidad
       })
     )
     const total = Object.values(map).reduce((s, v) => s + v, 0) || 1
@@ -246,7 +245,7 @@ export default function Reportes() {
   const periodoLabel = `${rango.inicio.toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })} — ${rango.fin.toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })}`
 
   function exportarCSV() {
-    const filas = [['N° Factura', 'Fecha', 'N° Items', 'Subtotal', 'Descuento', 'IVA', 'Total']]
+    const filas = [['N° Factura', 'Fecha', 'N° Items', 'Subtotal', 'Descuento', 'Total']]
     historialFiltrado.forEach((v) => {
       filas.push([
         v.numeroFactura || '',
@@ -254,7 +253,6 @@ export default function Reportes() {
         v.items.reduce((s, i) => s + i.cantidad, 0),
         v.subtotal ?? v.total,
         v.descuento ?? 0,
-        v.iva ?? 0,
         v.total,
       ])
     })
@@ -317,10 +315,6 @@ export default function Reportes() {
           <div className="tarjeta rep-kpi">
             <h3 className="rep-kpi-label">Ticket promedio</h3>
             <p className="rep-kpi-valor">{formatCOP(ticketPromedio)}</p>
-          </div>
-          <div className="tarjeta rep-kpi">
-            <h3 className="rep-kpi-label">IVA recaudado</h3>
-            <p className="rep-kpi-valor">{formatCOP(totalIVA)}</p>
           </div>
           <div className="tarjeta rep-kpi">
             <h3 className="rep-kpi-label">Descuentos otorgados</h3>

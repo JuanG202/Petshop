@@ -1,4 +1,4 @@
-export const IVA = 0.19;
+export const IVA = 0;
 
 const KEYS = {
   productos: 'ps_productos',

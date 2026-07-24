@@ -3,7 +3,6 @@ export default function Factura({ venta, onImprimir }) {
   if (!venta) return null
   const subtotal = venta.subtotal ?? venta.total
   const descuento = venta.descuento ?? 0
-  const iva = venta.iva ?? 0
   return (
     <div className="tarjeta" id="factura">
       <div className="fac-header">
@@ -22,11 +21,10 @@ export default function Factura({ venta, onImprimir }) {
         <div key={i.id} className="fac-item">
           <div className="fac-fila">
             <span>{i.nombre}</span>
-            <span className="fac-bold">$ {(i.precio * i.cantidad * (1 - (i.descuento || 0) / 100)).toLocaleString('es-CO', { maximumFractionDigits: 0 })}</span>
+            <span className="fac-bold">$ {(i.precio * i.cantidad).toLocaleString('es-CO', { maximumFractionDigits: 0 })}</span>
           </div>
           <div className="fac-detalle">
             {i.cantidad} x $ {i.precio.toLocaleString('es-CO')}
-            {i.descuento > 0 ? ` (desc. ${i.descuento}%)` : ''}
           </div>
         </div>
       ))}
@@ -41,10 +39,6 @@ export default function Factura({ venta, onImprimir }) {
           <span>- $ {descuento.toLocaleString('es-CO', { maximumFractionDigits: 0 })}</span>
         </div>
       )}
-      <div className="fac-fila">
-        <span>IVA (19%)</span>
-        <span>$ {iva.toLocaleString('es-CO')}</span>
-      </div>
       <hr className="fac-linea" />
       <div className="fac-fila fac-total">
         <span>TOTAL</span>

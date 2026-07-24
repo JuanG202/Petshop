@@ -122,7 +122,7 @@ export default function Productos() {
                     </select>
                   </div>
                   <div>
-                    <label>Precio de venta (sin IVA)</label>
+                    <label>Precio de venta</label>
                     <input name="precio" value={form.precio} onChange={handlePrecio} placeholder="Ej: 45.000" inputMode="numeric" required />
                   </div>
                   <div>
@@ -217,26 +217,21 @@ export default function Productos() {
 
         {vista === 'precios' && (
           <div className="tarjeta">
-            <h3 className="prod-form-title">Lista de precios (IVA 19% incluido)</h3>
+            <h3 className="prod-form-title">Lista de precios</h3>
             <table>
               <thead>
-                <tr><th>Producto</th><th>Categoría</th><th>Precio sin IVA</th><th>IVA (19%)</th><th>Precio final</th></tr>
+                <tr><th>Producto</th><th>Categoría</th><th>Precio</th></tr>
               </thead>
               <tbody>
-                {productos.map((p) => {
-                  const iva = Math.round(p.precio * 0.19)
-                  return (
-                    <tr key={p.id}>
-                      <td>{p.nombre}</td>
-                      <td>{p.categoria}</td>
-                      <td>$ {Number(p.precio).toLocaleString('es-CO')}</td>
-                      <td>$ {iva.toLocaleString('es-CO')}</td>
-                      <td className="prod-precio-final">$ {(p.precio + iva).toLocaleString('es-CO')}</td>
-                    </tr>
-                  )
-                })}
+                {productos.map((p) => (
+                  <tr key={p.id}>
+                    <td>{p.nombre}</td>
+                    <td>{p.categoria}</td>
+                    <td className="prod-precio-final">$ {Number(p.precio).toLocaleString('es-CO')}</td>
+                  </tr>
+                ))}
                 {productos.length === 0 && (
-                  <tr><td colSpan="5" className="prod-tabla-vacia">Sin productos</td></tr>
+                  <tr><td colSpan="3" className="prod-tabla-vacia">Sin productos</td></tr>
                 )}
               </tbody>
             </table>
