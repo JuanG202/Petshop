@@ -6,6 +6,7 @@ import Productos from './pages/Productos'
 import Reportes from './pages/Reportes'
 import Caja from './pages/Caja'
 import Facturas from './pages/Facturas'
+import Clientes from './pages/Clientes'
 import { getUser } from './db'
 
 function Privada({ children }) {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/productos" element={<SoloAdmin><Productos /></SoloAdmin>} />
         <Route path="/caja" element={<Privada><Caja /></Privada>} />
         <Route path="/facturas" element={<Privada><Facturas /></Privada>} />
+        <Route path="/clientes" element={<SoloAdmin><Clientes /></SoloAdmin>} />
         <Route path="/reportes" element={<SoloAdmin><Reportes /></SoloAdmin>} />
       </Routes>
     </BrowserRouter>

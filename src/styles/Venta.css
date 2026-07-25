@@ -11,3 +11,10 @@
 .venta-resumen-iva { margin-bottom: 10px; }
 .venta-total { margin-bottom: 10px; }
 .venta-btn-cobrar { width: 100%; padding: 14px; font-size: 18px; }
+.venta-cliente-box { position: relative; }
+.venta-cliente-seleccionado { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.venta-cliente-sugerencias { border: 1px solid #ddd; border-radius: 6px; margin-top: 4px; max-height: 160px; overflow-y: auto; }
+.venta-cliente-sugerencia { padding: 8px; cursor: pointer; }
+.venta-cliente-sugerencia:hover { background: #F1F5F4; }
+.venta-cliente-btn-nuevo { width: 100%; margin-top: 8px; }
+.venta-cliente-nuevo { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }

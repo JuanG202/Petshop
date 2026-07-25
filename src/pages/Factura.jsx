@@ -18,6 +18,13 @@ export default function Factura({ venta, onImprimir }) {
         <span className="fac-bold">{venta.numeroFactura}</span>
       </div>
       <p className="fac-fecha">{new Date(venta.fecha).toLocaleString('es-CO')}</p>
+      {venta.cliente && (
+        <div className="fac-cliente">
+          <span className="fac-cliente-label">Cliente</span>
+          <span className="fac-cliente-nombre">{venta.cliente.nombre}</span>
+          {venta.cliente.documento && <span className="fac-cliente-doc">{venta.cliente.documento}</span>}
+        </div>
+      )}
       <hr className="fac-linea" />
       {venta.items.map((i) => (
         <div key={i.id} className="fac-item">

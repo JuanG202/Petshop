@@ -22,6 +22,7 @@ export default function Topbar({ titulo }) {
         <Link to="/panel">Inicio</Link>
         <Link to="/venta">Venta</Link>
         {esAdmin && <Link to="/productos">Inventario</Link>}
+        {esAdmin && <Link to="/clientes">Clientes</Link>}
         <Link to="/caja">Caja</Link>
         <Link to="/facturas">Facturas</Link>
         {esAdmin && <Link to="/reportes">Reportes</Link>}

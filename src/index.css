@@ -47,10 +47,9 @@ button:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow
 button:active { transform: translateY(0) scale(0.96); }
 button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
-button.secundario { background: linear-gradient(135deg, #FFF1E6, #FDE4CC); color: #C2570C; border: 1px solid #FBD7B5; box-shadow: none; }
-button.secundario:hover { filter: brightness(1); background: #FBE3CB; }
 
-button.peligro { background: linear-gradient(135deg, #EF4444, #DC2626); box-shadow: 0 3px 10px rgba(220,38,38,0.3); }
+
+
 
 input, select {
   padding: 10px 14px;
@@ -184,13 +183,17 @@ tbody tr:hover { background: #F0FBFA; transform: scale(1.005); }
 .fac-tienda { font-size: 18px; font-weight: 700; letter-spacing: 1px; color: #0B2B2A; }
 .fac-sub { font-size: 11px; color: #5B8A85; margin-top: 2px; }
 .fac-linea { border: none; border-top: 1px dashed #10241D; margin: 10px 0; }
-.fac-fila { display: flex; justify-content: space-between; font-size: 14px; padding: 2px 0; }
+.fac-fila { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; padding: 2px 0; line-height: 1.4; }
 .fac-bold { font-weight: 700; }
 .fac-fecha { font-size: 12px; color: #5B8A85; margin-top: 2px; }
 .fac-item { padding: 4px 0; }
 .fac-detalle { font-size: 12px; color: #5B8A85; }
 .fac-total { font-size: 19px; font-weight: 700; margin-top: 4px; }
 .fac-gracias { text-align: center; font-size: 12px; color: #5B8A85; margin-top: 14px; }
+.fac-cliente { display: flex; flex-direction: column; margin: 6px 0; line-height: 1.5; }
+.fac-cliente-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #5B8A85; }
+.fac-cliente-nombre { font-size: 14px; font-weight: 700; }
+.fac-cliente-doc { font-size: 12px; color: #5B8A85; }
 
 @media print {
   body * { visibility: hidden; }
@@ -215,14 +218,24 @@ tbody tr:hover { background: #F0FBFA; transform: scale(1.005); }
     margin: 0;
   }
   .no-print { display: none !important; }
-  #factura, .fac-fila, .fac-tienda, .fac-sub, .fac-fecha, .fac-detalle, .fac-gracias, .fac-patas {
+  #factura, #factura * {
     color: #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
   .fac-patas { font-size: 17px !important; }
-  .fac-tienda { font-size: 20px !important; font-weight: 900 !important; }
-  .fac-fila { font-size: 15px !important; font-weight: 700 !important; }
+  .fac-tienda { font-size: 20px !important; font-weight: 900 !important; letter-spacing: 0.5px !important; }
+  .fac-sub { font-size: 12px !important; font-weight: 600 !important; }
+  .fac-fila { font-size: 15px !important; font-weight: 700 !important; line-height: 1.6 !important; }
+  .fac-fecha { font-size: 13px !important; font-weight: 600 !important; margin-bottom: 4px !important; }
+  .fac-detalle { font-size: 13px !important; font-weight: 600 !important; }
+  .fac-cliente { margin: 8px 0 !important; }
+  .fac-cliente-label { font-size: 11px !important; font-weight: 700 !important; }
+  .fac-cliente-nombre { font-size: 15px !important; font-weight: 900 !important; }
+  .fac-cliente-doc { font-size: 13px !important; font-weight: 700 !important; }
   .fac-total { font-size: 21px !important; font-weight: 900 !important; }
-  .fac-linea { border-top: 1.5px dashed #000 !important; }
+  .fac-gracias { font-size: 13px !important; font-weight: 600 !important; }
+  .fac-linea { border-top: 1.5px dashed #000 !important; margin: 12px 0 !important; }
   @page { margin: 2mm; }
 }
 

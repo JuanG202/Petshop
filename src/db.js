@@ -9,6 +9,7 @@ const KEYS = {
   consecutivo: 'ps_consecutivo',
   gastos: 'ps_gastos',
   usuarios: 'ps_usuarios',
+  clientes: 'ps_clientes',
 };
 
 function read(key, def) {
@@ -168,4 +169,36 @@ export function getVentasJornada() {
   const caja = getCajaAbierta();
   if (!caja) return [];
   return getVentas().filter((v) => (v.timestamp || 0) >= caja.timestamp);
+}
+
+/* ── Clientes ── */
+export function getClientes() {
+  return read(KEYS.clientes, []);
+}
+export function saveClientes(list) {
+  write(KEYS.clientes, list);
+}
+export function addCliente(c) {
+  const list = getClientes();
+  const cliente = { id: Date.now(), nombre: c.nombre, documento: c.documento, telefono: c.telefono || '' };
+  list.push(cliente);
+  saveClientes(list);
+  return cliente;
+}
+export function updateCliente(id, data) {
+  const list = getClientes().map((c) => (c.id === id ? { ...c, ...data } : c));
+  saveClientes(list);
+}
+export function deleteCliente(id) {
+  saveClientes(getClientes().filter((c) => c.id !== id));
+}
+export function buscarClientes(termino) {
+  const term = (termino || '').trim().toLowerCase();
+  if (!term) return [];
+  return getClientes().filter(
+    (c) => c.nombre.toLowerCase().includes(term) || (c.documento || '').toLowerCase().includes(term)
+  );
+}
+export function getClientePorDocumento(documento) {
+  return getClientes().find((c) => c.documento === documento);
 }

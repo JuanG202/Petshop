@@ -1,5 +1,6 @@
 .prod-tabs { display: flex; gap: 10px; margin-bottom: 16px; }
 .prod-form-title { margin-bottom: 12px; }
+.prod-header-flex { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
 .prod-codigos-block { margin-top: 14px; }
 .prod-codigo-input-row { display: flex; gap: 6px; }
 .prod-codigos-lista { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }

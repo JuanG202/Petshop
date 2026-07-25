@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Topbar from './Topbar'
 import Factura from './Factura'
-import { getProductoPorCodigo, updateProducto, addVenta, getNextFacturaNumero, getCajaAbierta } from '../db'
+import { getProductoPorCodigo, updateProducto, addVenta, getNextFacturaNumero, getCajaAbierta, buscarClientes, addCliente } from '../db'
 
 function formatearNumero(valor) {
   const soloNumeros = valor.replace(/\D/g, '')
@@ -17,8 +17,36 @@ export default function Venta() {
   const [descuento, setDescuento] = useState('')
   const [mensaje, setMensaje] = useState('')
   const [ultimaFactura, setUltimaFactura] = useState(null)
+  const [buscarCliente, setBuscarCliente] = useState('')
+  const [clienteSel, setClienteSel] = useState(null)
+  const [mostrarNuevoCliente, setMostrarNuevoCliente] = useState(false)
+  const [nuevoNombre, setNuevoNombre] = useState('')
+  const [nuevoDocumento, setNuevoDocumento] = useState('')
   const inputRef = useRef(null)
   const caja = getCajaAbierta()
+  const sugerenciasCliente = buscarCliente && !clienteSel ? buscarClientes(buscarCliente) : []
+
+  function seleccionarCliente(c) {
+    setClienteSel(c)
+    setBuscarCliente(c.nombre)
+    setMostrarNuevoCliente(false)
+  }
+
+  function quitarCliente() {
+    setClienteSel(null)
+    setBuscarCliente('')
+    setMostrarNuevoCliente(false)
+    setNuevoNombre('')
+    setNuevoDocumento('')
+  }
+
+  function guardarClienteNuevo() {
+    if (!nuevoNombre) return
+    const c = addCliente({ nombre: nuevoNombre, documento: nuevoDocumento })
+    seleccionarCliente(c)
+    setNuevoNombre('')
+    setNuevoDocumento('')
+  }
 
   useEffect(() => {
     inputRef.current?.focus()
@@ -137,11 +165,13 @@ export default function Venta() {
       subtotal,
       descuento: totalDescuento,
       total,
+      cliente: clienteSel ? { nombre: clienteSel.nombre, documento: clienteSel.documento } : null,
     }
     addVenta(venta)
     setUltimaFactura(venta)
     setCarrito([])
     setDescuento('')
+    quitarCliente()
   }
 
   return (
@@ -197,6 +227,45 @@ export default function Venta() {
         </div>
 
         <div>
+          <div className="tarjeta venta-cliente-box">
+            <label>Cliente (nombre, NIT o cédula)</label>
+            {clienteSel ? (
+              <div className="venta-cliente-seleccionado">
+                <span>👤 {clienteSel.nombre}{clienteSel.documento ? ` — ${clienteSel.documento}` : ''}</span>
+                <button className="secundario" onClick={quitarCliente}>Cambiar</button>
+              </div>
+            ) : (
+              <>
+                <input
+                  value={buscarCliente}
+                  onChange={(e) => { setBuscarCliente(e.target.value); setMostrarNuevoCliente(false) }}
+                  placeholder="Buscar cliente..."
+                />
+                {sugerenciasCliente.length > 0 && (
+                  <div className="venta-cliente-sugerencias">
+                    {sugerenciasCliente.map((c) => (
+                      <div key={c.id} className="venta-cliente-sugerencia" onClick={() => seleccionarCliente(c)}>
+                        {c.nombre} {c.documento ? `— ${c.documento}` : ''}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {buscarCliente && sugerenciasCliente.length === 0 && !mostrarNuevoCliente && (
+                  <button className="secundario venta-cliente-btn-nuevo" onClick={() => { setMostrarNuevoCliente(true); setNuevoNombre(buscarCliente) }}>
+                    ➕ Cliente no existe, crear nuevo
+                  </button>
+                )}
+                {mostrarNuevoCliente && (
+                  <div className="venta-cliente-nuevo">
+                    <input placeholder="Nombre" value={nuevoNombre} onChange={(e) => setNuevoNombre(e.target.value)} />
+                    <input placeholder="NIT / Cédula" value={nuevoDocumento} onChange={(e) => setNuevoDocumento(e.target.value)} />
+                    <button onClick={guardarClienteNuevo}>Guardar cliente</button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
           <div className="tarjeta">
             <div className="venta-resumen-fila">
               <span>Subtotal</span><span>$ {subtotal.toLocaleString('es-CO')}</span>
