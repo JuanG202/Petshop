@@ -43,7 +43,7 @@ export default function Login() {
         </div>
         {error && <p className="login-error">{error}</p>}
         <button type="submit" className="login-btn">Entrar</button>
-        <p className="login-nota">usuario: admin / clave: admin123</p>
+        <p className="login-nota">admin / admin123 — vendedora / venta123</p>
       </form>
     </div>
   )

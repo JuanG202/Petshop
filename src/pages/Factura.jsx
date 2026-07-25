@@ -1,3 +1,5 @@
+//RECIBO DE FACTURA ESTRUCTURA
+
 import '../styles/Factura.css'
 export default function Factura({ venta, onImprimir }) {
   if (!venta) return null

@@ -8,6 +8,7 @@ const KEYS = {
   historialCaja: 'ps_historial_caja',
   consecutivo: 'ps_consecutivo',
   gastos: 'ps_gastos',
+  usuarios: 'ps_usuarios',
 };
 
 function read(key, def) {
@@ -58,9 +59,36 @@ export function getNextFacturaNumero() {
   return String(actual).padStart(3, '0');
 }
 
+function getUsuariosBase() {
+  return [
+    { usuario: 'admin', clave: 'admin123', rol: 'admin' },
+    { usuario: 'vendedora', clave: 'venta123', rol: 'vendedora' },
+  ];
+}
+export function getUsuarios() {
+  let list = read(KEYS.usuarios, null);
+  if (!list) {
+    list = getUsuariosBase();
+    write(KEYS.usuarios, list);
+  }
+  return list;
+}
+export function saveUsuarios(list) {
+  write(KEYS.usuarios, list);
+}
+export function addUsuario(u) {
+  const list = getUsuarios();
+  list.push(u);
+  saveUsuarios(list);
+}
+export function deleteUsuario(usuario) {
+  saveUsuarios(getUsuarios().filter((u) => u.usuario !== usuario));
+}
+
 export function login(usuario, clave) {
-  if (usuario === 'admin' && clave === 'admin123') {
-    write(KEYS.user, { usuario: 'admin' });
+  const encontrado = getUsuarios().find((u) => u.usuario === usuario && u.clave === clave);
+  if (encontrado) {
+    write(KEYS.user, { usuario: encontrado.usuario, rol: encontrado.rol });
     return true;
   }
   return false;

@@ -5,10 +5,18 @@ import Venta from './pages/Venta'
 import Productos from './pages/Productos'
 import Reportes from './pages/Reportes'
 import Caja from './pages/Caja'
+import Facturas from './pages/Facturas'
 import { getUser } from './db'
 
 function Privada({ children }) {
   return getUser() ? children : <Navigate to="/login" replace />
+}
+
+function SoloAdmin({ children }) {
+  const user = getUser()
+  if (!user) return <Navigate to="/login" replace />
+  if (user.rol !== 'admin') return <Navigate to="/venta" replace />
+  return children
 }
 
 function App() {
@@ -19,9 +27,10 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/panel" element={<Privada><Panel /></Privada>} />
         <Route path="/venta" element={<Privada><Venta /></Privada>} />
-        <Route path="/productos" element={<Privada><Productos /></Privada>} />
+        <Route path="/productos" element={<SoloAdmin><Productos /></SoloAdmin>} />
         <Route path="/caja" element={<Privada><Caja /></Privada>} />
-        <Route path="/reportes" element={<Privada><Reportes /></Privada>} />
+        <Route path="/facturas" element={<Privada><Facturas /></Privada>} />
+        <Route path="/reportes" element={<SoloAdmin><Reportes /></SoloAdmin>} />
       </Routes>
     </BrowserRouter>
   )
