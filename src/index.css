@@ -194,6 +194,7 @@ tbody tr:hover { background: #F0FBFA; transform: scale(1.005); }
 .fac-cliente-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #5B8A85; }
 .fac-cliente-nombre { font-size: 14px; font-weight: 700; }
 .fac-cliente-doc { font-size: 12px; color: #5B8A85; }
+.fac-pago { text-align: center; font-size: 12px; color: #5B8A85; margin-top: 6px; }
 
 @media print {
   body * { visibility: hidden; }
@@ -235,6 +236,7 @@ tbody tr:hover { background: #F0FBFA; transform: scale(1.005); }
   .fac-cliente-doc { font-size: 13px !important; font-weight: 700 !important; }
   .fac-total { font-size: 21px !important; font-weight: 900 !important; }
   .fac-gracias { font-size: 13px !important; font-weight: 600 !important; }
+  .fac-pago { font-size: 13px !important; font-weight: 700 !important; }
   .fac-linea { border-top: 1.5px dashed #000 !important; margin: 12px 0 !important; }
   @page { margin: 2mm; }
 }

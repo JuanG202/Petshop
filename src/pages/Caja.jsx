@@ -25,6 +25,8 @@ export default function Caja() {
 
   const ventasJornada = caja ? getVentasJornada() : []
   const totalVentas = ventasJornada.reduce((s, v) => s + v.total, 0)
+  const totalVentasEfectivo = ventasJornada.reduce((s, v) => s + (v.pagoEfectivo !== undefined ? v.pagoEfectivo : v.total), 0)
+  const totalVentasNequi = ventasJornada.reduce((s, v) => s + (v.pagoNequi || 0), 0)
   const totalGastos = gastos.reduce((s, g) => s + g.valor, 0)
 
   function handleAgregarGasto() {
@@ -55,7 +57,7 @@ export default function Caja() {
   }
 
   const diferenciaPreview = montoCierre
-    ? Number(montoCierre.replace(/\./g, '')) - ((caja?.montoInicial || 0) + totalVentas - totalGastos)
+    ? Number(montoCierre.replace(/\./g, '')) - ((caja?.montoInicial || 0) + totalVentasEfectivo - totalGastos)
     : null
 
   return (
@@ -86,6 +88,7 @@ export default function Caja() {
               <div className="tarjeta">
                 <h3 className="caja-card-title">Ventas en jornada</h3>
                 <p className="caja-card-value caja-card-value-verde">{formatMoney(totalVentas)}</p>
+                <p className="caja-card-desglose">💵 Efectivo: {formatMoney(totalVentasEfectivo)} · 📲 Nequi: {formatMoney(totalVentasNequi)}</p>
               </div>
               <div className="tarjeta">
                 <h3 className="caja-card-title">N° de ventas</h3>
@@ -96,8 +99,9 @@ export default function Caja() {
                 <p className="caja-card-value caja-card-value-roja">- {formatMoney(totalGastos)}</p>
               </div>
               <div className="tarjeta">
-                <h3 className="caja-card-title">Total esperado</h3>
-                <p className="caja-card-value">{formatMoney(caja.montoInicial + totalVentas - totalGastos)}</p>
+                <h3 className="caja-card-title">Total esperado en efectivo</h3>
+                <p className="caja-card-value">{formatMoney(caja.montoInicial + totalVentasEfectivo - totalGastos)}</p>
+                <p className="caja-card-desglose">No incluye lo recibido por Nequi</p>
               </div>
             </div>
 
@@ -180,7 +184,7 @@ export default function Caja() {
             <h3 className="caja-historial-title">Historial de jornadas</h3>
             <table>
               <thead>
-                <tr><th>Apertura</th><th>Cierre</th><th>Inicial</th><th>Ventas</th><th>Gastos</th><th>Diferencia</th></tr>
+                <tr><th>Apertura</th><th>Cierre</th><th>Inicial</th><th>Ventas efectivo</th><th>Ventas Nequi</th><th>Gastos</th><th>Diferencia</th></tr>
               </thead>
               <tbody>
                 {historial.slice(0, 10).map((c, i) => (
@@ -188,7 +192,8 @@ export default function Caja() {
                     <td>{c.fecha} {c.hora}</td>
                     <td>{c.fechaCierre} {c.horaCierre}</td>
                     <td>{formatMoney(c.montoInicial)}</td>
-                    <td>{formatMoney(c.ventas)}</td>
+                    <td>{formatMoney(c.ventasEfectivo ?? c.ventas)}</td>
+                    <td>{formatMoney(c.ventasNequi)}</td>
                     <td>{formatMoney(c.gastos)}</td>
                     <td className={c.diferencia >= 0 ? 'caja-dif-positiva' : 'caja-dif-negativa'}>
                       {formatMoney(c.diferencia)}

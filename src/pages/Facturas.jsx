@@ -1,4 +1,4 @@
-//MODULO DE FACTURA PARA ELL USUARIO DE VENDEDORA
+//MODULO DE FACTURA PARA ELL USUARIO DE VENDEDORA Y ADMIN
 
 import '../styles/Reportes.css'
 import { useEffect, useMemo, useState } from 'react'

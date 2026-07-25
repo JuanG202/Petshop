@@ -7,6 +7,7 @@
 .caja-card-value { font-size: 22px; margin-top: 6px; }
 .caja-card-value-verde { color: #0D9488; }
 .caja-card-value-roja { color: #DC2626; }
+.caja-card-desglose { font-size: 12px; color: #5B8A85; margin-top: 4px; }
 .caja-btn-cerrar { width: 100%; padding: 14px; font-size: 15px; }
 .caja-cierre-title { margin-bottom: 14px; }
 .caja-form-group { margin-bottom: 12px; }

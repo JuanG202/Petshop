@@ -22,6 +22,9 @@ export default function Venta() {
   const [mostrarNuevoCliente, setMostrarNuevoCliente] = useState(false)
   const [nuevoNombre, setNuevoNombre] = useState('')
   const [nuevoDocumento, setNuevoDocumento] = useState('')
+  const [metodoPago, setMetodoPago] = useState('efectivo')
+  const [pagoEfectivo, setPagoEfectivo] = useState('')
+  const [pagoNequi, setPagoNequi] = useState('')
   const inputRef = useRef(null)
   const caja = getCajaAbierta()
   const sugerenciasCliente = buscarCliente && !clienteSel ? buscarClientes(buscarCliente) : []
@@ -136,6 +139,13 @@ export default function Venta() {
     setDescuento(formatearNumero(e.target.value))
   }
 
+  function handlePagoEfectivoChange(e) {
+    setPagoEfectivo(formatearNumero(e.target.value))
+  }
+  function handlePagoNequiChange(e) {
+    setPagoNequi(formatearNumero(e.target.value))
+  }
+
   const descuentoNumero = Number(descuento.replace(/\./g, '')) || 0
 
   const subtotal = carrito.reduce((s, i) => s + i.precio * i.cantidad, 0)
@@ -144,8 +154,18 @@ export default function Venta() {
   if (totalDescuento > subtotal) totalDescuento = subtotal
   const total = Math.round(subtotal - totalDescuento)
 
+  const pagoEfectivoNum = Number(pagoEfectivo.replace(/\./g, '')) || 0
+  const pagoNequiNum = Number(pagoNequi.replace(/\./g, '')) || 0
+  const sumaMixto = pagoEfectivoNum + pagoNequiNum
+  const mixtoValido = metodoPago !== 'mixto' || sumaMixto === total
+
   function cobrar() {
     if (carrito.length === 0) return
+    if (!mixtoValido) {
+      setMensaje('La suma de Efectivo + Nequi debe ser igual al total')
+      setTimeout(() => setMensaje(''), 3000)
+      return
+    }
 
     carrito.forEach((item) => {
       const productos = JSON.parse(localStorage.getItem('ps_productos') || '[]')
@@ -166,11 +186,17 @@ export default function Venta() {
       descuento: totalDescuento,
       total,
       cliente: clienteSel ? { nombre: clienteSel.nombre, documento: clienteSel.documento } : null,
+      metodoPago,
+      pagoEfectivo: metodoPago === 'nequi' ? 0 : metodoPago === 'mixto' ? pagoEfectivoNum : total,
+      pagoNequi: metodoPago === 'efectivo' ? 0 : metodoPago === 'mixto' ? pagoNequiNum : total,
     }
     addVenta(venta)
     setUltimaFactura(venta)
     setCarrito([])
     setDescuento('')
+    setMetodoPago('efectivo')
+    setPagoEfectivo('')
+    setPagoNequi('')
     quitarCliente()
   }
 
@@ -281,6 +307,31 @@ export default function Venta() {
               />
             </div>
             <h2 className="venta-total">Total: $ {total.toLocaleString('es-CO')}</h2>
+
+            <div className="venta-pago-box">
+              <label>Método de pago</label>
+              <div className="venta-pago-tabs">
+                <button type="button" className={metodoPago === 'efectivo' ? '' : 'secundario'} onClick={() => setMetodoPago('efectivo')}>💵 Efectivo</button>
+                <button type="button" className={metodoPago === 'nequi' ? '' : 'secundario'} onClick={() => setMetodoPago('nequi')}>📲 Nequi</button>
+                <button type="button" className={metodoPago === 'mixto' ? '' : 'secundario'} onClick={() => setMetodoPago('mixto')}>🔀 Mixto</button>
+              </div>
+              {metodoPago === 'mixto' && (
+                <div className="venta-pago-mixto">
+                  <div>
+                    <label>Efectivo ($)</label>
+                    <input type="text" inputMode="numeric" value={pagoEfectivo} onChange={handlePagoEfectivoChange} />
+                  </div>
+                  <div>
+                    <label>Nequi ($)</label>
+                    <input type="text" inputMode="numeric" value={pagoNequi} onChange={handlePagoNequiChange} />
+                  </div>
+                  <p className={mixtoValido ? 'venta-pago-suma-ok' : 'venta-pago-suma-error'}>
+                    Suma: $ {sumaMixto.toLocaleString('es-CO')} / Total: $ {total.toLocaleString('es-CO')}
+                  </p>
+                </div>
+              )}
+            </div>
+
             <button className="venta-btn-cobrar" onClick={cobrar} disabled={carrito.length === 0}>
               Cobrar
             </button>

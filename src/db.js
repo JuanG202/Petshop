@@ -143,6 +143,11 @@ export function cerrarCaja(montoCierre, notaCierre) {
   if (!caja) return null;
   const ventasJornada = getVentas().filter((v) => (v.timestamp || 0) >= caja.timestamp);
   const totalVentas = ventasJornada.reduce((s, v) => s + v.total, 0);
+  const totalVentasEfectivo = ventasJornada.reduce(
+    (s, v) => s + (v.pagoEfectivo !== undefined ? v.pagoEfectivo : v.total),
+    0
+  );
+  const totalVentasNequi = ventasJornada.reduce((s, v) => s + (v.pagoNequi || 0), 0);
   const gastosJornada = getGastos().filter((g) => (g.timestamp || 0) >= caja.timestamp);
   const totalGastos = gastosJornada.reduce((s, g) => s + g.valor, 0);
   const registro = {
@@ -151,10 +156,12 @@ export function cerrarCaja(montoCierre, notaCierre) {
     fechaCierre: new Date().toLocaleDateString('es-CO'),
     horaCierre: new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }),
     ventas: totalVentas,
+    ventasEfectivo: totalVentasEfectivo,
+    ventasNequi: totalVentasNequi,
     cantidadVentas: ventasJornada.length,
     gastos: totalGastos,
     montoCierre: Number(montoCierre) || 0,
-    diferencia: (Number(montoCierre) || 0) - (caja.montoInicial + totalVentas - totalGastos),
+    diferencia: (Number(montoCierre) || 0) - (caja.montoInicial + totalVentasEfectivo - totalGastos),
     notaCierre: notaCierre || '',
   };
   const historial = read(KEYS.historialCaja, []);

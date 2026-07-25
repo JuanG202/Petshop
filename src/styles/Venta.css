@@ -18,3 +18,9 @@
 .venta-cliente-sugerencia:hover { background: #F1F5F4; }
 .venta-cliente-btn-nuevo { width: 100%; margin-top: 8px; }
 .venta-cliente-nuevo { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.venta-pago-box { margin: 12px 0; }
+.venta-pago-tabs { display: flex; gap: 6px; margin-top: 6px; }
+.venta-pago-tabs button { flex: 1; }
+.venta-pago-mixto { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.venta-pago-suma-ok { color: #0D9488; font-size: 13px; }
+.venta-pago-suma-error { color: #DC2626; font-size: 13px; }
