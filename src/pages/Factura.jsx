@@ -61,6 +61,18 @@ export default function Factura({ venta, onImprimir }) {
             `🔀 Efectivo $ ${(venta.pagoEfectivo || 0).toLocaleString('es-CO')} + Nequi $ ${(venta.pagoNequi || 0).toLocaleString('es-CO')}`}
         </p>
       )}
+      {venta.metodoPago === 'efectivo' && venta.recibido != null && venta.recibido > 0 && (
+        <>
+          <div className="fac-fila">
+            <span>Recibe</span>
+            <span>$ {venta.recibido.toLocaleString('es-CO')}</span>
+          </div>
+          <div className="fac-fila">
+            <span>Devuelve</span>
+            <span>$ {(venta.vueltas || 0).toLocaleString('es-CO')}</span>
+          </div>
+        </>
+      )}
       <p className="fac-gracias">¡Gracias por su compra!</p>
       <p className="fac-patas">🐾 🐾 🐾</p>
       {onImprimir && (

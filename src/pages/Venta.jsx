@@ -26,6 +26,7 @@ export default function Venta() {
   const [metodoPago, setMetodoPago] = useState('efectivo')
   const [pagoEfectivo, setPagoEfectivo] = useState('')
   const [pagoNequi, setPagoNequi] = useState('')
+  const [pagoRecibido, setPagoRecibido] = useState('')
   const inputRef = useRef(null)
   const caja = getCajaAbierta()
   const sugerenciasCliente = buscarCliente && !clienteSel ? buscarClientes(buscarCliente) : []
@@ -175,6 +176,9 @@ export default function Venta() {
   function handlePagoNequiChange(e) {
     setPagoNequi(formatearNumero(e.target.value))
   }
+  function handlePagoRecibidoChange(e) {
+    setPagoRecibido(formatearNumero(e.target.value))
+  }
 
   const descuentoNumero = Number(descuento.replace(/\./g, '')) || 0
 
@@ -189,10 +193,20 @@ export default function Venta() {
   const sumaMixto = pagoEfectivoNum + pagoNequiNum
   const mixtoValido = metodoPago !== 'mixto' || sumaMixto === total
 
+  const pagoRecibidoNum = Number(pagoRecibido.replace(/\./g, '')) || 0
+  const vueltas = metodoPago === 'efectivo' && pagoRecibidoNum > total ? pagoRecibidoNum - total : 0
+  const faltaRecibir = metodoPago === 'efectivo' && pagoRecibidoNum > 0 && pagoRecibidoNum < total
+  const recibidoValido = metodoPago !== 'efectivo' || pagoRecibidoNum >= total
+
   function cobrar() {
     if (carrito.length === 0) return
     if (!mixtoValido) {
       setMensaje('La suma de Efectivo + Nequi debe ser igual al total')
+      setTimeout(() => setMensaje(''), 3000)
+      return
+    }
+    if (!recibidoValido) {
+      setMensaje('El valor recibido debe ser igual o mayor al total')
       setTimeout(() => setMensaje(''), 3000)
       return
     }
@@ -219,6 +233,8 @@ export default function Venta() {
       metodoPago,
       pagoEfectivo: metodoPago === 'nequi' ? 0 : metodoPago === 'mixto' ? pagoEfectivoNum : total,
       pagoNequi: metodoPago === 'efectivo' ? 0 : metodoPago === 'mixto' ? pagoNequiNum : total,
+      recibido: metodoPago === 'efectivo' ? pagoRecibidoNum : null,
+      vueltas: metodoPago === 'efectivo' ? vueltas : 0,
     }
     addVenta(venta)
     setUltimaFactura(venta)
@@ -227,6 +243,7 @@ export default function Venta() {
     setMetodoPago('efectivo')
     setPagoEfectivo('')
     setPagoNequi('')
+    setPagoRecibido('')
     quitarCliente()
   }
 
@@ -370,9 +387,36 @@ export default function Venta() {
                   </p>
                 </div>
               )}
+
+              {metodoPago === 'efectivo' && (
+                <div className="venta-pago-recibido">
+                  <label>Recibe ($)</label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={pagoRecibido}
+                    onChange={handlePagoRecibidoChange}
+                    placeholder="Ej: 100.000"
+                  />
+                  {faltaRecibir && (
+                    <p className="venta-pago-suma-error">
+                      Falta: $ {(total - pagoRecibidoNum).toLocaleString('es-CO')}
+                    </p>
+                  )}
+                  {vueltas > 0 && (
+                    <p className="venta-pago-devuelve">
+                      Devuelve: $ {vueltas.toLocaleString('es-CO')}
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
 
-            <button className="venta-btn-cobrar" onClick={cobrar} disabled={carrito.length === 0}>
+            <button
+              className="venta-btn-cobrar"
+              onClick={cobrar}
+              disabled={carrito.length === 0 || !mixtoValido || !recibidoValido}
+            >
               Cobrar
             </button>
           </div>
