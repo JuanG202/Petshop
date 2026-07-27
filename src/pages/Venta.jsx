@@ -13,6 +13,7 @@ function formatearNumero(valor) {
 
 export default function Venta() {
   const [codigo, setCodigo] = useState('')
+  const [sugerenciasProducto, setSugerenciasProducto] = useState([])
   const [carrito, setCarrito] = useState([])
   const [descuento, setDescuento] = useState('')
   const [mensaje, setMensaje] = useState('')
@@ -81,8 +82,36 @@ export default function Venta() {
     )
   }
 
+  function buscarProductosPorTexto(texto) {
+    const productos = JSON.parse(localStorage.getItem('ps_productos') || '[]')
+    const t = texto.trim().toLowerCase()
+    if (!t) return []
+    return productos.filter(
+      (p) =>
+        (p.codigos || []).some((c) => (c || '').toLowerCase().includes(t)) ||
+        (p.nombre || '').toLowerCase().includes(t)
+    ).slice(0, 8)
+  }
+
+  function handleCodigoChange(e) {
+    const valor = e.target.value
+    setCodigo(valor)
+    setSugerenciasProducto(buscarProductosPorTexto(valor))
+  }
+
+  function seleccionarSugerenciaProducto(prod) {
+    agregarProductoObj(prod)
+    setCodigo('')
+    setSugerenciasProducto([])
+    inputRef.current?.focus()
+  }
+
   function agregarProducto(codigoBuscado) {
     const prod = getProductoPorCodigo(codigoBuscado.trim())
+    agregarProductoObj(prod)
+  }
+
+  function agregarProductoObj(prod) {
     if (!prod) {
       setMensaje('Producto no encontrado')
       setTimeout(() => setMensaje(''), 2000)
@@ -113,6 +142,7 @@ export default function Venta() {
     if (!codigo) return
     agregarProducto(codigo)
     setCodigo('')
+    setSugerenciasProducto([])
   }
 
   function cambiarCantidad(id, delta) {
@@ -207,15 +237,25 @@ export default function Venta() {
         <div>
           <div className="tarjeta">
             <form onSubmit={handleScan}>
-              <label>Escanear / ingresar código de barras</label>
+              <label>Escanear código de barras o buscar por nombre</label>
               <input
                 ref={inputRef}
                 value={codigo}
-                onChange={(e) => setCodigo(e.target.value)}
+                onChange={handleCodigoChange}
                 autoFocus
-                placeholder="Escanea aquí..."
+                placeholder="Escanea o escribe el nombre..."
+                autoComplete="off"
               />
             </form>
+            {sugerenciasProducto.length > 0 && (
+              <div className="venta-cliente-sugerencias">
+                {sugerenciasProducto.map((p) => (
+                  <div key={p.id} className="venta-cliente-sugerencia" onClick={() => seleccionarSugerenciaProducto(p)}>
+                    {p.nombre} {(p.codigos || [])[0] ? `— ${p.codigos[0]}` : ''} {Number(p.stock) <= 0 ? '(sin stock)' : ''}
+                  </div>
+                ))}
+              </div>
+            )}
             {mensaje && <p className="venta-mensaje">{mensaje}</p>}
           </div>
 

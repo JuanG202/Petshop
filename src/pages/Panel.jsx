@@ -58,6 +58,7 @@ export default function Panel() {
           <h3 className="panel-accesos-title">Accesos rápidos</h3>
           <div className="panel-accesos">
             <Link to="/venta"><button>Nueva venta</button></Link>
+            <Link to="/clientes"><button className="secundario">Clientes</button></Link>
             {esAdmin && <Link to="/productos"><button className="secundario">Inventario</button></Link>}
             <Link to="/caja"><button className="secundario">Caja</button></Link>
             <Link to="/facturas"><button className="secundario">Facturas</button></Link>
