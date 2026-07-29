@@ -64,6 +64,7 @@
   gap: 20px;
   align-items: start;
 }
+.rep-dos-columnas > div { min-width: 0; }
 @media (max-width: 800px) {
   .rep-dos-columnas { grid-template-columns: 1fr; }
 }
@@ -92,5 +93,12 @@
 /* ── Responsive ── */
 @media (max-width: 640px) {
   .rep-encabezado { flex-direction: column; }
+  .rep-encabezado-acciones { width: 100%; }
+  .rep-encabezado-acciones button { flex: 1 1 auto; }
   .rep-filtros-fechas { max-width: none; }
+  .rep-filtros-fechas > div { min-width: 120px; }
+  .rep-historial-header { flex-direction: column; align-items: stretch; }
+  .rep-buscador { max-width: none; }
+  .rep-kpi-valor { font-size: 20px; }
+  .rep-chart-label { font-size: 9px; }
 }

@@ -21,3 +21,9 @@
 .caja-historial-title { margin-bottom: 12px; }
 .caja-dif-positiva { color: #0D9488; font-weight: 700; }
 .caja-dif-negativa { color: #DC2626; font-weight: 700; }
+
+@media (max-width: 640px) {
+  .caja-estado-tarjeta { flex-wrap: wrap; }
+  .caja-acciones { flex-direction: column; }
+  .caja-acciones button { flex: none; width: 100%; }
+}

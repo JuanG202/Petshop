@@ -277,35 +277,39 @@ export default function Venta() {
           </div>
 
           <div className="tarjeta">
-            <table>
-              <thead>
-                <tr>
-                  <th>Producto</th>
-                  <th>Precio</th>
-                  <th>Cant.</th>
-                  <th>Subtotal</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {carrito.map((i) => (
-                  <tr key={i.id}>
-                    <td>{i.nombre}</td>
-                    <td>$ {i.precio.toLocaleString('es-CO')}</td>
-                    <td>
-                      <button className="secundario" onClick={() => cambiarCantidad(i.id, -1)}>-</button>
-                      {' '}{i.cantidad}{' '}
-                      <button className="secundario" onClick={() => cambiarCantidad(i.id, 1)}>+</button>
-                    </td>
-                    <td>$ {(i.precio * i.cantidad).toLocaleString('es-CO', { maximumFractionDigits: 0 })}</td>
-                    <td><button className="peligro" onClick={() => quitar(i.id)}>X</button></td>
+            <div className="tabla-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cant.</th>
+                    <th>Subtotal</th>
+                    <th></th>
                   </tr>
-                ))}
-                {carrito.length === 0 && (
-                  <tr><td colSpan="5" className="venta-tabla-vacia">Carrito vacío</td></tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {carrito.map((i) => (
+                    <tr key={i.id}>
+                      <td>{i.nombre}</td>
+                      <td>$ {i.precio.toLocaleString('es-CO')}</td>
+                      <td>
+                        <div className="venta-cant-control">
+                          <button className="secundario" onClick={() => cambiarCantidad(i.id, -1)}>-</button>
+                          <span>{i.cantidad}</span>
+                          <button className="secundario" onClick={() => cambiarCantidad(i.id, 1)}>+</button>
+                        </div>
+                      </td>
+                      <td>$ {(i.precio * i.cantidad).toLocaleString('es-CO', { maximumFractionDigits: 0 })}</td>
+                      <td><button className="peligro" onClick={() => quitar(i.id)}>X</button></td>
+                    </tr>
+                  ))}
+                  {carrito.length === 0 && (
+                    <tr><td colSpan="5" className="venta-tabla-vacia">Carrito vacío</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 

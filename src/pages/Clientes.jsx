@@ -120,48 +120,44 @@ export default function Clientes() {
               onChange={(e) => setBusqueda(e.target.value)}
             />
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>NIT / Cédula</th>
-                <th>Teléfono</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtrados.map((c) => (
-                <tr key={c.id}>
-                  <td>{c.nombre}</td>
-                  <td>{c.documento}</td>
-                  <td>{c.telefono}</td>
-                  <td>
-                    <button
-                      className="secundario"
-                      onClick={() => handleEditar(c)}
-                      style={{ marginRight: "15px" }}
-                    >
-                      Editar
-                    </button>
-
-                    <button
-                      className="peligro"
-                      onClick={() => handleEliminar(c.id)}
-                    >
-                      Eliminar
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {filtrados.length === 0 && (
+          <div className="tabla-scroll">
+            <table>
+              <thead>
                 <tr>
-                  <td colSpan="4" className="prod-tabla-vacia">
-                    Sin clientes registrados
-                  </td>
+                  <th>Nombre</th>
+                  <th>NIT / Cédula</th>
+                  <th>Teléfono</th>
+                  <th></th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filtrados.map((c) => (
+                  <tr key={c.id}>
+                    <td>{c.nombre}</td>
+                    <td>{c.documento}</td>
+                    <td>{c.telefono}</td>
+                    <td>
+                      <div className="acciones-tabla">
+                        <button className="secundario" onClick={() => handleEditar(c)}>
+                          Editar
+                        </button>
+                        <button className="peligro" onClick={() => handleEliminar(c.id)}>
+                          Eliminar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                {filtrados.length === 0 && (
+                  <tr>
+                    <td colSpan="4" className="prod-tabla-vacia">
+                      Sin clientes registrados
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

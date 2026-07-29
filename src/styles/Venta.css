@@ -3,9 +3,12 @@
 .venta-cerrada-titulo { margin-top: 10px; }
 .venta-cerrada-texto { color: #5B8A85; margin-top: 8px; margin-bottom: 20px; }
 .venta-layout { display: grid; grid-template-columns: 1fr 380px; gap: 20px; }
+.venta-layout > div { min-width: 0; }
 .venta-mensaje { color: #DC2626; margin-top: 8px; }
 .venta-input-desc { width: 100%; padding: 10px; font-size: 18px; box-sizing: border-box; }
 .venta-tabla-vacia { text-align: center; padding: 20px; }
+.venta-cant-control { display: inline-flex; align-items: center; gap: 8px; }
+.venta-cant-control button { padding: 6px 12px; }
 .venta-resumen-fila { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; }
 .venta-resumen-descuento { color: #DC2626; flex-direction: column; align-items: stretch; gap: 4px; }
 .venta-resumen-iva { margin-bottom: 10px; }
@@ -25,4 +28,17 @@
 .venta-pago-suma-ok { color: #0D9488; font-size: 13px; }
 .venta-pago-suma-error { color: #DC2626; font-size: 13px; margin-top: 6px; font-weight: 600; }
 .venta-pago-recibido { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .venta-layout { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .venta-input-desc { font-size: 16px; }
+  .venta-total { font-size: 20px; }
+  .venta-btn-cobrar { font-size: 16px; padding: 13px; }
+  .venta-pago-tabs { flex-direction: column; }
+  .venta-cerrada-tarjeta { padding: 28px 16px; }
+}
 .venta-pago-devuelve { color: #0D9488; font-size: 18px; font-weight: 700; margin-top: 4px; }

@@ -1,11 +1,11 @@
-.login-fondo { display: flex; height: 100vh; align-items: center; justify-content: center; background: #0B2B2A; position: relative; overflow: hidden; }
+.login-fondo { display: flex; min-height: 100vh; align-items: center; justify-content: center; background: #0B2B2A; position: relative; overflow: hidden; padding: 20px 16px; box-sizing: border-box; }
 .login-huella { position: absolute; }
 .login-huella-1 { top: 15%; left: 10%; animation-delay: 0s; }
 .login-huella-2 { top: 70%; left: 20%; animation-delay: 1s; }
 .login-huella-3 { top: 30%; left: 80%; animation-delay: 2s; }
 .login-huella-4 { top: 80%; left: 75%; animation-delay: 0.5s; }
 .login-huella-5 { top: 50%; left: 50%; animation-delay: 1.5s; }
-.login-form { width: 340px; position: relative; z-index: 1; }
+.login-form { width: 340px; max-width: 100%; position: relative; z-index: 1; }
 .login-encabezado { text-align: center; margin-bottom: 20px; }
 .login-icono { font-size: 40px; animation: bounce 1.6s ease-in-out infinite; }
 .login-titulo { margin-top: 8px; }

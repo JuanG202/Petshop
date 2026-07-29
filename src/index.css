@@ -2,11 +2,14 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'DM Sans', 'Segoe UI', sans-serif; }
 
+html { overflow-x: hidden; }
+
 body {
   background: #F2F9F8;
   color: #10241D;
   background-image: radial-gradient(circle, rgba(20,184,166,0.06) 1.5px, transparent 1.5px);
   background-size: 26px 26px;
+  overflow-x: hidden;
 }
 
 h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; color: #0B2B2A; }
@@ -241,8 +244,67 @@ tbody tr:hover { background: #F0FBFA; transform: scale(1.005); }
   @page { margin: 2mm; }
 }
 
+/* ── Tablas responsivas: scroll horizontal solo en la tabla, no en toda la tarjeta ── */
+.tabla-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -1px;
+}
+.tabla-scroll table { min-width: 480px; margin: 0; }
+
+/* ── Acciones en tablas (Editar / Eliminar, etc.) ── */
+.acciones-tabla { display: flex; flex-wrap: wrap; gap: 8px; }
+.acciones-tabla button { margin: 0; }
+
 /* ── Responsive ── */
+@media (max-width: 900px) {
+  .contenedor { padding: 20px 14px; }
+}
+
 @media (max-width: 640px) {
-  .topbar { padding: 12px 16px; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  .topbar {
+    padding: 14px 16px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .topbar strong { font-size: 15px; justify-content: center; }
+  .topbar-nav {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .topbar-nav a, .topbar-nav button {
+    margin: 0;
+    padding: 11px 8px;
+    font-size: 13px;
+    text-align: center;
+  }
+  .topbar-badge { grid-column: 1 / -1; margin-right: 0; padding: 9px 12px; }
+
   .contenedor { padding: 16px 12px; }
+
+  .tarjeta { padding: 16px; border-radius: 12px; }
+
+  .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+
+  .tabla-scroll table { min-width: 420px; }
+  th, td { padding: 9px 8px; font-size: 12.5px; }
+
+  .acciones-tabla { flex-direction: column; }
+  .acciones-tabla button { width: 100%; }
+
+  button { padding: 10px 16px; font-size: 13.5px; }
+
+  h1 { font-size: 22px; }
+  h2 { font-size: 19px; }
+  h3 { font-size: 16px; }
+}
+
+@media (max-width: 400px) {
+  .contenedor { padding: 12px 8px; }
+  .tarjeta { padding: 12px; }
 }

@@ -118,20 +118,22 @@ export default function Caja() {
               <button onClick={handleAgregarGasto}>➕ Registrar gasto</button>
 
               {gastos.length > 0 && (
-                <table>
-                  <thead>
-                    <tr><th>Hora</th><th>Concepto</th><th>Valor</th></tr>
-                  </thead>
-                  <tbody>
-                    {gastos.map((g) => (
-                      <tr key={g.id}>
-                        <td>{g.hora}</td>
-                        <td>{g.concepto}</td>
-                        <td>{formatMoney(g.valor)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <div className="tabla-scroll">
+                  <table>
+                    <thead>
+                      <tr><th>Hora</th><th>Concepto</th><th>Valor</th></tr>
+                    </thead>
+                    <tbody>
+                      {gastos.map((g) => (
+                        <tr key={g.id}>
+                          <td>{g.hora}</td>
+                          <td>{g.concepto}</td>
+                          <td>{formatMoney(g.valor)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </div>
 
@@ -182,26 +184,28 @@ export default function Caja() {
         {historial.length > 0 && (
           <div className="tarjeta">
             <h3 className="caja-historial-title">Historial de jornadas</h3>
-            <table>
-              <thead>
-                <tr><th>Apertura</th><th>Cierre</th><th>Inicial</th><th>Ventas efectivo</th><th>Ventas Nequi</th><th>Gastos</th><th>Diferencia</th></tr>
-              </thead>
-              <tbody>
-                {historial.slice(0, 10).map((c, i) => (
-                  <tr key={i}>
-                    <td>{c.fecha} {c.hora}</td>
-                    <td>{c.fechaCierre} {c.horaCierre}</td>
-                    <td>{formatMoney(c.montoInicial)}</td>
-                    <td>{formatMoney(c.ventasEfectivo ?? c.ventas)}</td>
-                    <td>{formatMoney(c.ventasNequi)}</td>
-                    <td>{formatMoney(c.gastos)}</td>
-                    <td className={c.diferencia >= 0 ? 'caja-dif-positiva' : 'caja-dif-negativa'}>
-                      {formatMoney(c.diferencia)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="tabla-scroll">
+              <table>
+                <thead>
+                  <tr><th>Apertura</th><th>Cierre</th><th>Inicial</th><th>Ventas efectivo</th><th>Ventas Nequi</th><th>Gastos</th><th>Diferencia</th></tr>
+                </thead>
+                <tbody>
+                  {historial.slice(0, 10).map((c, i) => (
+                    <tr key={i}>
+                      <td>{c.fecha} {c.hora}</td>
+                      <td>{c.fechaCierre} {c.horaCierre}</td>
+                      <td>{formatMoney(c.montoInicial)}</td>
+                      <td>{formatMoney(c.ventasEfectivo ?? c.ventas)}</td>
+                      <td>{formatMoney(c.ventasNequi)}</td>
+                      <td>{formatMoney(c.gastos)}</td>
+                      <td className={c.diferencia >= 0 ? 'caja-dif-positiva' : 'caja-dif-negativa'}>
+                        {formatMoney(c.diferencia)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>

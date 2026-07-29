@@ -49,35 +49,37 @@ export default function Facturas() {
               onChange={(e) => setBusqueda(e.target.value)}
             />
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Factura</th>
-                <th>Fecha</th>
-                <th>N° items</th>
-                <th>Total</th>
-                <th className="no-print"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {historialFiltrado.slice(0, visibleCount).map((v) => (
-                <tr key={v.id}>
-                  <td>{v.numeroFactura || '—'}</td>
-                  <td>{new Date(v.fecha).toLocaleString('es-CO')}</td>
-                  <td>{v.items.reduce((s, i) => s + i.cantidad, 0)}</td>
-                  <td>{formatCOP(v.total)}</td>
-                  <td className="no-print">
-                    <button className="secundario" onClick={() => setFacturaAImprimir(v)}>🖨️ Reimprimir</button>
-                  </td>
-                </tr>
-              ))}
-              {historialFiltrado.length === 0 && (
+          <div className="tabla-scroll">
+            <table>
+              <thead>
                 <tr>
-                  <td colSpan="5" className="rep-tabla-vacia">Sin facturas registradas</td>
+                  <th>Factura</th>
+                  <th>Fecha</th>
+                  <th>N° items</th>
+                  <th>Total</th>
+                  <th className="no-print"></th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {historialFiltrado.slice(0, visibleCount).map((v) => (
+                  <tr key={v.id}>
+                    <td>{v.numeroFactura || '—'}</td>
+                    <td>{new Date(v.fecha).toLocaleString('es-CO')}</td>
+                    <td>{v.items.reduce((s, i) => s + i.cantidad, 0)}</td>
+                    <td>{formatCOP(v.total)}</td>
+                    <td className="no-print">
+                      <button className="secundario" onClick={() => setFacturaAImprimir(v)}>🖨️ Reimprimir</button>
+                    </td>
+                  </tr>
+                ))}
+                {historialFiltrado.length === 0 && (
+                  <tr>
+                    <td colSpan="5" className="rep-tabla-vacia">Sin facturas registradas</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
           {visibleCount < historialFiltrado.length && (
             <button className="secundario no-print rep-ver-mas" onClick={() => setVisibleCount((c) => c + 15)}>
               Ver más ({historialFiltrado.length - visibleCount} restantes)

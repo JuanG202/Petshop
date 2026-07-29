@@ -179,38 +179,42 @@ export default function Productos() {
                 onChange={(e) => setBusqueda(e.target.value)}
                 className="prod-buscador"
               />
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Categoría</th>
-                    <th>Códigos</th>
-                    <th>Precio</th>
-                    <th>Stock</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtrados.map((p) => (
-                    <tr key={p.id}>
-                      <td>{p.nombre}</td>
-                      <td>{p.categoria}</td>
-                      <td className="prod-tabla-codigos">{(p.codigos || []).join(', ')}</td>
-                      <td>$ {Number(p.precio).toLocaleString('es-CO')}</td>
-                      <td className={Number(p.stock) <= Number(p.stockMinimo || 5) ? 'prod-stock-bajo' : 'prod-stock-ok'}>
-                        {p.stock}
-                      </td>
-                      <td>
-                        <button className="secundario prod-btn-editar" onClick={() => handleEditar(p)}>Editar</button>
-                        <button className="peligro" onClick={() => handleEliminar(p.id)}>Eliminar</button>
-                      </td>
+              <div className="tabla-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Categoría</th>
+                      <th>Códigos</th>
+                      <th>Precio</th>
+                      <th>Stock</th>
+                      <th>Acciones</th>
                     </tr>
-                  ))}
-                  {filtrados.length === 0 && (
-                    <tr><td colSpan="6" className="prod-tabla-vacia">Sin productos</td></tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {filtrados.map((p) => (
+                      <tr key={p.id}>
+                        <td>{p.nombre}</td>
+                        <td>{p.categoria}</td>
+                        <td className="prod-tabla-codigos">{(p.codigos || []).join(', ')}</td>
+                        <td>$ {Number(p.precio).toLocaleString('es-CO')}</td>
+                        <td className={Number(p.stock) <= Number(p.stockMinimo || 5) ? 'prod-stock-bajo' : 'prod-stock-ok'}>
+                          {p.stock}
+                        </td>
+                        <td>
+                          <div className="acciones-tabla">
+                            <button className="secundario prod-btn-editar" onClick={() => handleEditar(p)}>Editar</button>
+                            <button className="peligro" onClick={() => handleEliminar(p.id)}>Eliminar</button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                    {filtrados.length === 0 && (
+                      <tr><td colSpan="6" className="prod-tabla-vacia">Sin productos</td></tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </>
         )}
@@ -218,23 +222,25 @@ export default function Productos() {
         {vista === 'precios' && (
           <div className="tarjeta">
             <h3 className="prod-form-title">Lista de precios</h3>
-            <table>
-              <thead>
-                <tr><th>Producto</th><th>Categoría</th><th>Precio</th></tr>
-              </thead>
-              <tbody>
-                {productos.map((p) => (
-                  <tr key={p.id}>
-                    <td>{p.nombre}</td>
-                    <td>{p.categoria}</td>
-                    <td className="prod-precio-final">$ {Number(p.precio).toLocaleString('es-CO')}</td>
-                  </tr>
-                ))}
-                {productos.length === 0 && (
-                  <tr><td colSpan="3" className="prod-tabla-vacia">Sin productos</td></tr>
-                )}
-              </tbody>
-            </table>
+            <div className="tabla-scroll">
+              <table>
+                <thead>
+                  <tr><th>Producto</th><th>Categoría</th><th>Precio</th></tr>
+                </thead>
+                <tbody>
+                  {productos.map((p) => (
+                    <tr key={p.id}>
+                      <td>{p.nombre}</td>
+                      <td>{p.categoria}</td>
+                      <td className="prod-precio-final">$ {Number(p.precio).toLocaleString('es-CO')}</td>
+                    </tr>
+                  ))}
+                  {productos.length === 0 && (
+                    <tr><td colSpan="3" className="prod-tabla-vacia">Sin productos</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>

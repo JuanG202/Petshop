@@ -335,31 +335,33 @@ export default function Reportes() {
         <div className="rep-dos-columnas">
           <div className="tarjeta">
             <h3 className="rep-title">Productos más vendidos</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Producto</th>
-                  <th>Cant.</th>
-                  <th>Ingresos</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topProductos.map(([nombre, datos], idx) => (
-                  <tr key={nombre}>
-                    <td>{medallas[idx] || idx + 1}</td>
-                    <td>{nombre}</td>
-                    <td>{datos.cantidad}</td>
-                    <td>{formatCOP(datos.ingresos)}</td>
-                  </tr>
-                ))}
-                {topProductos.length === 0 && (
+            <div className="tabla-scroll">
+              <table>
+                <thead>
                   <tr>
-                    <td colSpan="4" className="rep-tabla-vacia">Sin datos aún</td>
+                    <th>#</th>
+                    <th>Producto</th>
+                    <th>Cant.</th>
+                    <th>Ingresos</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {topProductos.map(([nombre, datos], idx) => (
+                    <tr key={nombre}>
+                      <td>{medallas[idx] || idx + 1}</td>
+                      <td>{nombre}</td>
+                      <td>{datos.cantidad}</td>
+                      <td>{formatCOP(datos.ingresos)}</td>
+                    </tr>
+                  ))}
+                  {topProductos.length === 0 && (
+                    <tr>
+                      <td colSpan="4" className="rep-tabla-vacia">Sin datos aún</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <div className="tarjeta">

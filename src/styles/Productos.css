@@ -12,6 +12,13 @@
 .prod-tabla-codigos { font-size: 11px; }
 .prod-stock-bajo { color: #DC2626; font-weight: 600; }
 .prod-stock-ok { color: #10241D; font-weight: 600; }
-.prod-btn-editar { margin-right: 6px; }
 .prod-tabla-vacia { text-align: center; padding: 20px; }
 .prod-precio-final { font-weight: 700; }
+
+@media (max-width: 640px) {
+  .prod-tabs { flex-direction: column; }
+  .prod-tabs button { width: 100%; }
+  .prod-codigo-input-row { flex-direction: column; }
+  .prod-form-acciones { flex-direction: column; }
+  .prod-tabla-codigos { max-width: 140px; }
+}
